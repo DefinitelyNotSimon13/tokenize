@@ -15,12 +15,16 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
+        packages = {
+          default = pkgs.callPackage ./. { };
+        };
+
         devShells.default = pkgs.mkShell {
           # Uncomment relevant sections!
 
           # Packages e.g. used in cli
           packages = with pkgs; [
-            rustc
+            # rustc
             cargo
             bacon
             rust-analyzer
@@ -43,4 +47,5 @@
         };
       }
     );
+
 }
