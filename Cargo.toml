@@ -1,5 +1,5 @@
 [package]
-name = "tokenize"
+name = "tokenize-cli"
 description = "Tokenize your codebase blazingly fast into a single file for LLM Context 🚀🤖 "
 license = "MIT OR Apache-2.0"
 keywords = ["ai", "files"]
@@ -7,6 +7,10 @@ categories = ["command-line-utilities"]
 repository = "https://github.com/DefinitelyNotSimon13/tokenize"
 version = "0.1.0"
 edition = "2024"
+
+[[bin]]
+name = "tokenize"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.39", features = ["derive"] }

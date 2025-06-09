@@ -6,7 +6,7 @@ use clap::Parser;
 use env_logger::Env;
 use ignore::WalkBuilder;
 use log::debug;
-use tokenize::{cli::Cli, config::Config, context_generator::ContextGenerator};
+use tokenize_cli::{cli::Cli, config::Config, context_generator::ContextGenerator};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = init();
@@ -28,7 +28,7 @@ fn init() -> Cli {
     let env = Env::default().filter_or("RUST_LOG", "error");
     env_logger::init_from_env(env);
 
-    let cli = tokenize::cli::Cli::parse();
+    let cli = Cli::parse();
     debug!("parsed cli args: {cli:#?}");
 
     cli

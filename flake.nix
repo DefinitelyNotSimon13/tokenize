@@ -28,6 +28,7 @@
             cargo
             bacon
             rust-analyzer
+            cargo-deb
             rustfmt
           ];
 

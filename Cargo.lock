@@ -377,7 +377,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokenize"
+name = "tokenize-cli"
 version = "0.1.0"
 dependencies = [
  "clap",
