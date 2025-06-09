@@ -16,7 +16,7 @@
       in
       {
         packages = {
-          default = pkgs.callPackage ./. { };
+          default = pkgs.callPackage ./dist/package.nix { };
         };
 
         devShells.default = pkgs.mkShell {
