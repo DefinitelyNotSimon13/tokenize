@@ -6,7 +6,6 @@ _Technically nothing is "tokenized", all files are simply put into one file alon
 
 *Basic Usage*
 ```sh
-# (TARGET_DIR is currently not working, the current dir is always used)
 tokenize [TARGET_DIR]
 ```
 
@@ -24,7 +23,6 @@ tokenize . -p prompt.txt
 ```sh
 tokenize [TARGET_DIR] --no-gitignore
 ```
-_See [Issue #1](https://github.com/DefinitelyNotSimon13/tokenize/issues/1) regarding the target dir_
 
 **Include hidden files**
 ```sh
