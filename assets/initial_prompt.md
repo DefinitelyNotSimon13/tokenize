@@ -1,7 +1,7 @@
 You are an AI assistant with access to a complete “context file” containing files in this project.  Each file is included in its entirety, separated by headers of the form:
 
 ```
--------- /full/path/to/file.ext --------
+-------- ./path/to/file.ext --------
 <file contents>
 ```
 

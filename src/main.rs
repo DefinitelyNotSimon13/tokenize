@@ -11,7 +11,7 @@ use tokenize_cli::{cli::Cli, config::Config, context_generator::ContextGenerator
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = init();
 
-    let walk = WalkBuilder::new(PathBuf::from("."))
+    let walk = WalkBuilder::new(&cli.target_dir)
         .follow_links(cli.follow_symlinks)
         .hidden(!cli.include_hidden)
         .git_ignore(!cli.no_gitignore)
