@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "DefinitelyNotSimon13";
     repo = "tokenize";
     tag = finalAttrs.version;
-    hash = "sha256-N02yxkuHCl7HFodDiwKMMo0Thm4JohjCPePVO5aTy2s=";
+    hash = "sha256-3k4nLI7i7wk/u4WDN35YO6N38cfXB76vGiAZByozjBw=";
   };
 
   cargoHash = "sha256-9dB15miojGSZoT7Z2tLEeU41xVtfedAIGKJDvhmYbb4=";
