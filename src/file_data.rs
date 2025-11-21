@@ -4,6 +4,12 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// ASCII space character - characters below this (except whitespace) are considered non-printable
+const ASCII_SPACE: u8 = 0x20;
+
+/// Maximum ratio of non-printable characters before considering a file binary
+const BINARY_THRESHOLD: f64 = 0.3;
+
 #[derive(Debug)]
 pub struct FileData {
     path: PathBuf,
@@ -44,6 +50,11 @@ impl FileData {
     /// A file is considered binary if it contains null bytes or has a high ratio of non-text bytes.
     #[must_use]
     pub fn is_binary(&self) -> bool {
+        // Empty files are considered text
+        if self.content.is_empty() {
+            return false;
+        }
+
         // Check first 8KB of the file for null bytes (common binary indicator)
         let sample_size = self.content.len().min(8192);
         let sample = &self.content[..sample_size];
@@ -56,10 +67,10 @@ impl FileData {
         // Check for ratio of non-printable characters
         let non_text_count = sample
             .iter()
-            .filter(|&&b| b < 0x20 && b != b'\n' && b != b'\r' && b != b'\t')
+            .filter(|&&b| b < ASCII_SPACE && b != b'\n' && b != b'\r' && b != b'\t')
             .count();
 
-        // If more than 30% of characters are non-printable, consider it binary
-        non_text_count as f64 / sample.len() as f64 > 0.3
+        // If more than the threshold of characters are non-printable, consider it binary
+        non_text_count as f64 / sample.len() as f64 > BINARY_THRESHOLD
     }
 }
