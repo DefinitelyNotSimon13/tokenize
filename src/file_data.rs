@@ -67,32 +67,38 @@ impl FileData {
         })
     }
 
-    /// Checks if a file should be skipped based on extension alone (performance optimization).
-    /// Returns true if the file is definitely binary based on extension.
+    /// Checks if a file is binary using a three-tier detection system.
+    /// 
+    /// This function uses fast paths to avoid unnecessary I/O:
+    /// 1. Extension-based detection for known binary formats (instant, no I/O)
+    /// 2. Extension-based detection for known text formats (instant, no I/O)
+    /// 3. Content-based detection for unknown extensions (reads only first 8KB)
+    /// 
+    /// Returns true if the file is binary, false if it's text.
     #[must_use]
-    pub fn is_binary_by_extension(path: &Path) -> bool {
+    pub fn is_binary_file(path: &Path) -> bool {
+        // Fast path 1: Check if it's a known binary extension
         if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
             let ext_lower = ext.to_lowercase();
-            return BINARY_EXTENSIONS.contains(&ext_lower.as_str());
+            
+            // Known binary extension - skip immediately
+            if BINARY_EXTENSIONS.contains(&ext_lower.as_str()) {
+                return true;
+            }
+            
+            // Known text extension - skip content check
+            if TEXT_EXTENSIONS.contains(&ext_lower.as_str()) {
+                return false;
+            }
         }
-        false
+
+        // Fast path 2: Unknown extension - check content by reading only a sample
+        Self::is_binary_by_content_check(path)
     }
 
-    /// Checks if a file is definitely text based on extension (performance optimization).
-    /// Returns true if the file is definitely text and can skip content-based detection.
-    #[must_use]
-    pub fn is_text_by_extension(path: &Path) -> bool {
-        if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
-            let ext_lower = ext.to_lowercase();
-            return TEXT_EXTENSIONS.contains(&ext_lower.as_str());
-        }
-        false
-    }
-
-    /// Efficiently checks if a file is binary by reading only a sample.
-    /// Returns true if the file appears to be binary based on content analysis.
-    #[must_use]
-    pub fn is_binary_by_content(path: &Path) -> bool {
+    /// Internal helper: checks if file content is binary by reading only a sample.
+    /// Only called for files with unknown extensions.
+    fn is_binary_by_content_check(path: &Path) -> bool {
         let Ok(mut file) = File::open(path) else {
             return false; // If we can't open it, treat as text to avoid skipping
         };
@@ -143,39 +149,5 @@ impl FileData {
             .extension()
             .and_then(|s| s.to_str())
             .unwrap_or_default()
-    }
-
-    /// Checks if the file content appears to be binary.
-    /// A file is considered binary if it contains null bytes or has a high ratio of non-text bytes.
-    /// Note: This method assumes the file content is already loaded. For performance-critical
-    /// paths, use `is_binary_by_extension()` and `is_binary_by_content()` instead.
-    #[must_use]
-    pub fn is_binary(&self) -> bool {
-        // Empty files are considered text
-        if self.content.is_empty() {
-            return false;
-        }
-
-        // Check first 8KB of the file for null bytes (common binary indicator)
-        let sample_size = self.content.len().min(BINARY_SAMPLE_SIZE);
-        let sample = &self.content[..sample_size];
-
-        // If file contains null bytes, it's likely binary
-        if sample.contains(&0) {
-            return true;
-        }
-
-        // Check for ratio of non-printable characters
-        let non_text_count = sample
-            .iter()
-            .filter(|&&b| b < ASCII_SPACE && b != b'\n' && b != b'\r' && b != b'\t')
-            .count();
-
-        // If more than the threshold of characters are non-printable, consider it binary
-        // Precision loss in f64 conversion is acceptable for ratio comparison
-        #[allow(clippy::cast_precision_loss)]
-        {
-            non_text_count as f64 / sample.len() as f64 > BINARY_THRESHOLD
-        }
     }
 }
