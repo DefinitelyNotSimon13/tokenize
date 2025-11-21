@@ -33,8 +33,8 @@ fn default_prompt_file() -> String {
 impl Default for ConfigFile {
     fn default() -> Self {
         Self {
-            out_file: DEFAULT_OUT.to_string(),
-            prompt_file: DEFAULT_PROMPT_FILENAME.to_string(),
+            out_file: default_out_file(),
+            prompt_file: default_prompt_file(),
         }
     }
 }
@@ -124,7 +124,7 @@ fn create_default_config(config_path: &Path) -> Result<ConfigFile, Error> {
     if let Some(parent) = config_path.parent() {
         fs::create_dir_all(parent)
             .map_err(|e| Error::ConfigWriteError(parent.to_path_buf(), e))?;
-        
+
         // Create default prompt file
         let prompt_path = parent.join(&config.prompt_file);
         if !prompt_path.exists() {
