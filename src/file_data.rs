@@ -74,6 +74,10 @@ impl FileData {
             .count();
 
         // If more than the threshold of characters are non-printable, consider it binary
-        non_text_count as f64 / sample.len() as f64 > BINARY_THRESHOLD
+        // Precision loss in f64 conversion is acceptable for ratio comparison
+        #[allow(clippy::cast_precision_loss)]
+        {
+            non_text_count as f64 / sample.len() as f64 > BINARY_THRESHOLD
+        }
     }
 }

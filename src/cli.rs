@@ -4,6 +4,7 @@ use clap::{Parser, command};
 
 #[derive(Debug, Parser)]
 #[command(version, about, long_about = None)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct Cli {
     pub target_dir: PathBuf,
 
