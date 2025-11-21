@@ -13,7 +13,7 @@ pub struct Cli {
     #[arg(short, long)]
     pub prompt_file: Option<PathBuf>,
 
-    #[arg(short, long)]
+    #[arg(short, long = "config")]
     pub config_file: Option<PathBuf>,
 
     #[arg(long)]
