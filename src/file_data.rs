@@ -32,14 +32,22 @@ impl FileData {
     }
 
     pub fn write<W: Write>(&self, buf: &mut W, show_tokens: bool) -> io::Result<()> {
-        if show_tokens && self.token_count.is_some() {
-            writeln!(
-                buf,
-                "-------- {} ({} tokens) --------\n```{}",
-                self.path.display(),
-                self.token_count.unwrap(),
-                self.extension()
-            )?;
+        if show_tokens {
+            if let Some(count) = self.token_count {
+                writeln!(
+                    buf,
+                    "-------- {} ({count} tokens) --------\n```{}",
+                    self.path.display(),
+                    self.extension()
+                )?;
+            } else {
+                writeln!(
+                    buf,
+                    "-------- {} --------\n```{}",
+                    self.path.display(),
+                    self.extension()
+                )?;
+            }
         } else {
             writeln!(
                 buf,
