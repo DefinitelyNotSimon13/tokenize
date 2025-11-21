@@ -1,5 +1,9 @@
 # Tokenize
 
+[![CI](https://github.com/DefinitelyNotSimon13/tokenize/actions/workflows/ci.yml/badge.svg)](https://github.com/DefinitelyNotSimon13/tokenize/actions/workflows/ci.yml)
+[![Security Audit](https://github.com/DefinitelyNotSimon13/tokenize/actions/workflows/security.yml/badge.svg)](https://github.com/DefinitelyNotSimon13/tokenize/actions/workflows/security.yml)
+[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
+
 _Technically nothing is "tokenized", all files are simply put into one file along with some formatting and an initial prompt._
 
 ## Usage
