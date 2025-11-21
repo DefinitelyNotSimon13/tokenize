@@ -41,6 +41,7 @@ impl ContextGenerator<'_> {
 
         let writer = Arc::clone(&self.writer);
         let out_filename = self.config.out_file.file_name();
+        let include_binary = self.config.include_binary;
         walker.run(|| {
             // This closure runs once per thread, returning the actual visitor
             let writer = Arc::clone(&writer);
@@ -57,6 +58,12 @@ impl ContextGenerator<'_> {
                 let path = entry.into_path();
 
                 if path.file_name() == out_filename {
+                    return WalkState::Continue;
+                }
+
+                // Skip binary files unless include_binary is set
+                // Uses optimized three-tier detection (extension checks + sample-based content check)
+                if !include_binary && FileData::is_binary_file(&path) {
                     return WalkState::Continue;
                 }
 

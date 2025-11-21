@@ -35,5 +35,11 @@ _This was not tested, I am not sure if it actually includes the files in the fin
 tokenize [TARGET_DIR] --follow symlinks
 ```
 
+**Include Binary Files**
+_By default, binary files are automatically excluded from the output. Use this flag to include them._
+```sh
+tokenize [TARGET_DIR] --include-binary
+```
+
 ## Attribution
 - [ignore](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore)
