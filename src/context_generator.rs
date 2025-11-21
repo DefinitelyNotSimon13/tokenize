@@ -48,7 +48,7 @@ impl ContextGenerator<'_> {
         
         // Write initial prompt and optionally count its tokens
         {
-            let mut w = self.writer.lock().unwrap();
+            let mut w = self.writer.lock().expect("Failed to lock writer for prompt");
             w.write_all(default_prompt)?;
         }
         
@@ -56,7 +56,7 @@ impl ContextGenerator<'_> {
             && let Ok(prompt_text) = String::from_utf8(default_prompt.to_vec())
         {
             let prompt_tokens = self.tokenizer.count_tokens(&prompt_text);
-            let mut total = self.total_tokens.lock().unwrap();
+            let mut total = self.total_tokens.lock().expect("Failed to lock total_tokens");
             *total += prompt_tokens;
         }
 
@@ -94,12 +94,12 @@ impl ContextGenerator<'_> {
                     if show_tokens {
                         fd.tokenize(&tokenizer);
                         if let Some(count) = fd.token_count() {
-                            let mut total = total_tokens.lock().unwrap();
+                            let mut total = total_tokens.lock().expect("Failed to lock total_tokens");
                             *total += count;
                         }
                     }
                     
-                    fd.write(&mut *writer.lock().unwrap(), show_tokens)?;
+                    fd.write(&mut *writer.lock().expect("Failed to lock writer"), show_tokens)?;
                     Ok(())
                 })() {
                     warn!("{}: {e}", path.display());
@@ -111,8 +111,8 @@ impl ContextGenerator<'_> {
 
         // Write total token count if enabled
         if self.config.show_tokens {
-            let total = *self.total_tokens.lock().unwrap();
-            writeln!(self.writer.lock().unwrap(), "\n-------- Total Tokens: {total} --------")?;
+            let total = *self.total_tokens.lock().expect("Failed to lock total_tokens");
+            writeln!(self.writer.lock().expect("Failed to lock writer"), "\n-------- Total Tokens: {total} --------")?;
         }
 
         Ok(())

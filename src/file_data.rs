@@ -26,36 +26,22 @@ impl FileData {
     }
 
     pub fn tokenize(&mut self, tokenizer: &Tokenizer) {
-        if let Ok(text) = String::from_utf8(self.content.clone()) {
-            self.token_count = Some(tokenizer.count_tokens(&text));
+        if let Ok(text) = std::str::from_utf8(&self.content) {
+            self.token_count = Some(tokenizer.count_tokens(text));
         }
     }
 
     pub fn write<W: Write>(&self, buf: &mut W, show_tokens: bool) -> io::Result<()> {
-        if show_tokens {
-            if let Some(count) = self.token_count {
-                writeln!(
-                    buf,
-                    "-------- {} ({count} tokens) --------\n```{}",
-                    self.path.display(),
-                    self.extension()
-                )?;
-            } else {
-                writeln!(
-                    buf,
-                    "-------- {} --------\n```{}",
-                    self.path.display(),
-                    self.extension()
-                )?;
-            }
+        let header = if show_tokens {
+            self.token_count.map_or_else(
+                || format!("-------- {} --------", self.path.display()),
+                |count| format!("-------- {} ({count} tokens) --------", self.path.display())
+            )
         } else {
-            writeln!(
-                buf,
-                "-------- {} --------\n```{}",
-                self.path.display(),
-                self.extension()
-            )?;
-        }
+            format!("-------- {} --------", self.path.display())
+        };
+        
+        writeln!(buf, "{header}\n```{}", self.extension())?;
         buf.write_all(&self.content)?;
         writeln!(buf, "```")
     }
