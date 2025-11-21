@@ -17,7 +17,7 @@ pub struct Cli {
     pub prompt_file: Option<PathBuf>,
 
     /// Path to config file (default: `$XDG_CONFIG_HOME/tokenize/config.toml`)
-    #[arg(short, long)]
+    #[arg(short, long = "config")]
     pub config_file: Option<PathBuf>,
 
     /// Don't respect .gitignore files
