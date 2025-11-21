@@ -10,6 +10,9 @@ const ASCII_SPACE: u8 = 0x20;
 /// Maximum ratio of non-printable characters before considering a file binary
 const BINARY_THRESHOLD: f64 = 0.3;
 
+/// Sample size (in bytes) to check for binary content detection
+const BINARY_SAMPLE_SIZE: usize = 8192;
+
 #[derive(Debug)]
 pub struct FileData {
     path: PathBuf,
@@ -56,7 +59,7 @@ impl FileData {
         }
 
         // Check first 8KB of the file for null bytes (common binary indicator)
-        let sample_size = self.content.len().min(8192);
+        let sample_size = self.content.len().min(BINARY_SAMPLE_SIZE);
         let sample = &self.content[..sample_size];
 
         // If file contains null bytes, it's likely binary
