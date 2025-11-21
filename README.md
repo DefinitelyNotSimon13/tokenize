@@ -14,11 +14,11 @@ tokenize [TARGET_DIR]
 ```
 This works with any LLM provider - no tokenization required!
 
-**Show token counts for OpenAI models**
+**Count tokens for OpenAI models**
 ```sh
-tokenize [TARGET_DIR] --show-tokens
+tokenize [TARGET_DIR] --count-tokens
 ```
-Note: Token counts are calculated using OpenAI's tokenization. For Claude or Gemini, use the tool without `--show-tokens` and let those platforms calculate tokens natively.
+Note: Token counts are calculated using OpenAI's tokenization. For Claude or Gemini, use the tool without `--count-tokens` and let those platforms calculate tokens natively.
 
 **Specify a custom output file**
 ```sh
@@ -27,10 +27,10 @@ tokenize . -o output.md
 
 **Choose a different OpenAI encoding model**
 ```sh
-tokenize . --model cl100k-base --show-tokens
+tokenize . --encoding cl100k-base --count-tokens
 ```
 
-Available OpenAI models (used only with `--show-tokens`):
+Available OpenAI encodings (used only with `--count-tokens`):
 - `o200k-base` (default) - GPT-5, GPT-4.1, GPT-4o, o4, o3, and o1 models
 - `cl100k-base` - ChatGPT models, text-embedding-ada-002
 - `p50k-base` - Code models, text-davinci-002, text-davinci-003
