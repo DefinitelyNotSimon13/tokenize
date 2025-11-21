@@ -53,15 +53,8 @@ impl Config {
             .or(config_file.prompt_file)
             .unwrap_or_else(|| PathBuf::from(DEFAULT_PROMPT_FILE));
 
-        let target_dir = if cli.target_dir.as_os_str().is_empty() {
-            // If target_dir is empty (not provided), use config file or default
-            config_file.target_dir.unwrap_or_else(|| PathBuf::from(DEFAULT_TARGET))
-        } else {
-            cli.target_dir
-        };
-
         Ok(Self {
-            target_dir,
+            target_dir: cli.target_dir,
             out_file,
             prompt_file,
         })
