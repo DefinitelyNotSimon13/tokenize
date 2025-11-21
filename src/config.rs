@@ -11,6 +11,7 @@ pub struct Config {
     pub target_dir: PathBuf,
     pub out_file: PathBuf,
     pub prompt_file: PathBuf,
+    pub include_binary: bool,
 }
 
 impl Default for Config {
@@ -19,6 +20,7 @@ impl Default for Config {
             target_dir: PathBuf::from(DEFAULT_TARGET),
             out_file: PathBuf::from(DEFAULT_OUT),
             prompt_file: PathBuf::from(DEFAULT_PROMPT_FILE),
+            include_binary: false,
         }
     }
 }
@@ -34,6 +36,7 @@ impl Config {
             target_dir: cli.target_dir,
             out_file,
             prompt_file,
+            include_binary: cli.include_binary,
         })
     }
 }

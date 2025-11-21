@@ -21,4 +21,7 @@ pub struct Cli {
 
     #[arg(long)]
     pub follow_symlinks: bool,
+
+    #[arg(long)]
+    pub include_binary: bool,
 }

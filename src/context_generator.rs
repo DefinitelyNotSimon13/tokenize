@@ -41,6 +41,7 @@ impl ContextGenerator<'_> {
 
         let writer = Arc::clone(&self.writer);
         let out_filename = self.config.out_file.file_name();
+        let include_binary = self.config.include_binary;
         walker.run(|| {
             // This closure runs once per thread, returning the actual visitor
             let writer = Arc::clone(&writer);
@@ -62,6 +63,12 @@ impl ContextGenerator<'_> {
 
                 if let Err(e) = (|| -> io::Result<()> {
                     let fd = FileData::read(&path)?;
+                    
+                    // Skip binary files unless include_binary is set
+                    if !include_binary && fd.is_binary() {
+                        return Ok(());
+                    }
+                    
                     fd.write(&mut *writer.lock().unwrap())?;
                     Ok(())
                 })() {
