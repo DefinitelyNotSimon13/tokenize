@@ -1,0 +1,14 @@
+# Example configuration file for tokenize
+# Save this as tokenize.toml and use with: tokenize --config tokenize.toml [TARGET_DIR]
+
+# Output file path (default: llm_context.md)
+# Example: Set a custom output filename for your project
+out_file = "my_project_context.md"
+
+# Prompt file to use at the beginning of the output (default: assets/initial_prompt.md)
+# Example: Use a custom prompt file tailored to your needs
+prompt_file = "custom_prompts/my_prompt.md"
+
+# Note: CLI arguments always take precedence over config file values
+# For example: tokenize --out-file override.md --config tokenize.toml .
+# will use "override.md" as the output file instead of "my_project_context.md"

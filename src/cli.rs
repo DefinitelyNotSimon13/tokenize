@@ -13,6 +13,9 @@ pub struct Cli {
     #[arg(short, long)]
     pub prompt_file: Option<PathBuf>,
 
+    #[arg(short, long = "config")]
+    pub config_file: Option<PathBuf>,
+
     #[arg(long)]
     pub no_gitignore: bool,
 
