@@ -15,8 +15,8 @@ const BINARY_SAMPLE_SIZE: usize = 8192;
 
 /// Common binary file extensions that should be skipped
 const BINARY_EXTENSIONS: &[&str] = &[
-    // Images
-    "png", "jpg", "jpeg", "gif", "bmp", "ico", "webp", "svg", "tiff", "tif",
+    // Images (excluding SVG which is XML/text)
+    "png", "jpg", "jpeg", "gif", "bmp", "ico", "webp", "tiff", "tif",
     // Videos
     "mp4", "avi", "mov", "mkv", "wmv", "flv", "webm",
     // Audio
@@ -41,7 +41,7 @@ const TEXT_EXTENSIONS: &[&str] = &[
     "rs", "go", "py", "js", "ts", "jsx", "tsx", "java", "c", "cpp", "cc", "h", "hpp",
     "cs", "php", "rb", "swift", "kt", "scala", "sh", "bash", "zsh", "fish",
     // Web
-    "html", "htm", "css", "scss", "sass", "less", "vue",
+    "html", "htm", "css", "scss", "sass", "less", "vue", "svg",
     // Data/Config
     "json", "xml", "yaml", "yml", "toml", "ini", "conf", "cfg",
     // Markup/Documentation
