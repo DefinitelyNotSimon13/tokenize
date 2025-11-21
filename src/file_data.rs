@@ -92,7 +92,8 @@ impl FileData {
             }
         }
 
-        // Fast path 2: Unknown extension - check content by reading only a sample
+        // Fallback: Unknown extension - check content by reading only a sample
+        // This is the slowest path but only used for files with unknown extensions
         Self::is_binary_by_content_check(path)
     }
 
