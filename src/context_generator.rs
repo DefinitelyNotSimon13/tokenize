@@ -32,11 +32,10 @@ impl<'a> ContextGenerator<'a> {
 
 impl ContextGenerator<'_> {
     pub fn generate(&mut self, walker: WalkParallel) -> io::Result<()> {
-        let default_prompt = include_bytes!("../assets/initial_prompt.md");
-        // let initial_prompt = fs::read(self.config.prompt_file.clone())?;
+        let initial_prompt = std::fs::read(&self.config.prompt_file)?;
         {
             let mut w = self.writer.lock().unwrap();
-            w.write_all(default_prompt)?;
+            w.write_all(&initial_prompt)?;
         }
 
         let writer = Arc::clone(&self.writer);
