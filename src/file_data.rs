@@ -4,10 +4,13 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::tokenizer::Tokenizer;
+
 #[derive(Debug)]
 pub struct FileData {
     path: PathBuf,
     content: Vec<u8>,
+    token_count: Option<usize>,
 }
 
 impl FileData {
@@ -18,16 +21,33 @@ impl FileData {
         Ok(Self {
             path: path.to_path_buf(),
             content,
+            token_count: None,
         })
     }
 
-    pub fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
-        writeln!(
-            buf,
-            "-------- {} --------\n```{}",
-            self.path.display(),
-            self.extension()
-        )?;
+    pub fn tokenize(&mut self, tokenizer: &Tokenizer) {
+        if let Ok(text) = String::from_utf8(self.content.clone()) {
+            self.token_count = Some(tokenizer.count_tokens(&text));
+        }
+    }
+
+    pub fn write<W: Write>(&self, buf: &mut W, show_tokens: bool) -> io::Result<()> {
+        if show_tokens && self.token_count.is_some() {
+            writeln!(
+                buf,
+                "-------- {} ({} tokens) --------\n```{}",
+                self.path.display(),
+                self.token_count.unwrap(),
+                self.extension()
+            )?;
+        } else {
+            writeln!(
+                buf,
+                "-------- {} --------\n```{}",
+                self.path.display(),
+                self.extension()
+            )?;
+        }
         buf.write_all(&self.content)?;
         writeln!(buf, "```")
     }
@@ -38,5 +58,10 @@ impl FileData {
             .extension()
             .and_then(|s| s.to_str())
             .unwrap_or_default()
+    }
+
+    #[must_use]
+    pub const fn token_count(&self) -> Option<usize> {
+        self.token_count
     }
 }

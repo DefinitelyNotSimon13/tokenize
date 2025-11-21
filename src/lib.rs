@@ -5,3 +5,4 @@ pub mod cli;
 pub mod config;
 pub mod context_generator;
 pub mod file_data;
+pub mod tokenizer;

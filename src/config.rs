@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::cli::Cli;
+use crate::cli::{Cli, EncodingModel};
 
 const DEFAULT_TARGET: &str = ".";
 const DEFAULT_OUT: &str = "llm_context.md";
@@ -11,6 +11,8 @@ pub struct Config {
     pub target_dir: PathBuf,
     pub out_file: PathBuf,
     pub prompt_file: PathBuf,
+    pub model: EncodingModel,
+    pub show_tokens: bool,
 }
 
 impl Default for Config {
@@ -19,6 +21,8 @@ impl Default for Config {
             target_dir: PathBuf::from(DEFAULT_TARGET),
             out_file: PathBuf::from(DEFAULT_OUT),
             prompt_file: PathBuf::from(DEFAULT_PROMPT_FILE),
+            model: EncodingModel::O200kBase,
+            show_tokens: false,
         }
     }
 }
@@ -34,6 +38,8 @@ impl Config {
             target_dir: cli.target_dir,
             out_file,
             prompt_file,
+            model: cli.model,
+            show_tokens: cli.show_tokens,
         })
     }
 }
