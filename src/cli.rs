@@ -37,11 +37,11 @@ pub struct Cli {
     #[arg(long)]
     pub follow_symlinks: bool,
 
-    /// Encoding model to use for tokenization
+    /// `OpenAI` encoding model to use for tokenization (only used with --show-tokens)
     #[arg(short = 'm', long, value_enum, default_value = "o200k-base")]
     pub model: EncodingModel,
 
-    /// Show token counts for each file and total
+    /// Show token counts for each file and total (uses `OpenAI` tokenization)
     #[arg(short = 't', long)]
     pub show_tokens: bool,
 }

@@ -2,7 +2,9 @@
 
 Tokenize your codebase blazingly fast into a single file for LLM Context 🚀🤖
 
-This tool uses [tiktoken-rs](https://github.com/zurawiki/tiktoken-rs) to actually tokenize files and provide accurate token counts for different OpenAI encoding models.
+This tool combines all your project files into a single markdown file suitable for any LLM (OpenAI, Claude, Gemini, etc.).
+
+Optionally, it can use [tiktoken-rs](https://github.com/zurawiki/tiktoken-rs) to provide accurate token counts for OpenAI models.
 
 ## Usage
 
@@ -10,23 +12,25 @@ This tool uses [tiktoken-rs](https://github.com/zurawiki/tiktoken-rs) to actuall
 ```sh
 tokenize [TARGET_DIR]
 ```
+This works with any LLM provider - no tokenization required!
 
-**Show token counts for each file and total**
+**Show token counts for OpenAI models**
 ```sh
 tokenize [TARGET_DIR] --show-tokens
 ```
+Note: Token counts are calculated using OpenAI's tokenization. For Claude or Gemini, use the tool without `--show-tokens` and let those platforms calculate tokens natively.
 
 **Specify a custom output file**
 ```sh
 tokenize . -o output.md
 ```
 
-**Choose a different encoding model**
+**Choose a different OpenAI encoding model**
 ```sh
 tokenize . --model cl100k-base --show-tokens
 ```
 
-Available models:
+Available OpenAI models (used only with `--show-tokens`):
 - `o200k-base` (default) - GPT-5, GPT-4.1, GPT-4o, o4, o3, and o1 models
 - `cl100k-base` - ChatGPT models, text-embedding-ada-002
 - `p50k-base` - Code models, text-davinci-002, text-davinci-003
