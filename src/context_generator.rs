@@ -61,14 +61,23 @@ impl ContextGenerator<'_> {
                     return WalkState::Continue;
                 }
 
-                if let Err(e) = (|| -> io::Result<()> {
-                    let fd = FileData::read(&path)?;
-                    
-                    // Skip binary files unless include_binary is set
-                    if !include_binary && fd.is_binary() {
-                        return Ok(());
+                // Performance optimization: skip binary files early without reading content
+                if !include_binary {
+                    // Fast path: check extension first
+                    if FileData::is_binary_by_extension(&path) {
+                        return WalkState::Continue;
                     }
                     
+                    // For unknown extensions, check if it's a known text extension
+                    // If not, do content-based detection
+                    if !FileData::is_text_by_extension(&path) 
+                        && FileData::is_binary_by_content(&path) {
+                        return WalkState::Continue;
+                    }
+                }
+
+                if let Err(e) = (|| -> io::Result<()> {
+                    let fd = FileData::read(&path)?;
                     fd.write(&mut *writer.lock().unwrap())?;
                     Ok(())
                 })() {
