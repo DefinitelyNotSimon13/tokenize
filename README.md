@@ -35,5 +35,12 @@ _This was not tested, I am not sure if it actually includes the files in the fin
 tokenize [TARGET_DIR] --follow symlinks
 ```
 
+**Use a configuration file**
+```sh
+tokenize --config-file tokenize.toml [TARGET_DIR]
+```
+
+Configuration files use TOML format and can specify default values for `out_file` and `prompt_file`. CLI arguments always take precedence over config file values. See `tokenize.toml.example` for a sample configuration file.
+
 ## Attribution
 - [ignore](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore)

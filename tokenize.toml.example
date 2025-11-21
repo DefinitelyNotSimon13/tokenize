@@ -1,0 +1,10 @@
+# Example configuration file for tokenize
+# Save this as tokenize.toml and use with: tokenize --config-file tokenize.toml [TARGET_DIR]
+
+# Output file path (default: llm_context.md)
+out_file = "llm_context.md"
+
+# Prompt file to use at the beginning of the output (default: assets/initial_prompt.md)
+prompt_file = "assets/initial_prompt.md"
+
+# Note: CLI arguments always take precedence over config file values
