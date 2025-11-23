@@ -1,6 +1,5 @@
 #![warn(clippy::all, clippy::pedantic, clippy::nursery, clippy::cargo)]
 #![allow(clippy::missing_errors_doc, clippy::missing_panics_doc)]
-use std::path::PathBuf;
 
 use clap::Parser;
 use env_logger::Env;
